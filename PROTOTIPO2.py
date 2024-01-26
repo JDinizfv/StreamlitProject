@@ -106,9 +106,7 @@ else:
 # Filtrar os dados
 
 
- filtered_data1 = data[(data['ESTADO'] == selected_state) & 
-                           (data['STATUS'] == selected_status) & 
-                           ]                          
+filtered_data1 = data[(data['ESTADO'] == selected_state) & (data['STATUS'] == selected_status)]                          
 
 # Apresentar os resultados
 st.write("Número de reclamações:", len(filtered_data))
