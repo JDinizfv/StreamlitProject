@@ -1,3 +1,6 @@
+
+
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -91,8 +94,7 @@ def plot_distribuicao_tamanho_texto(df, texto_column, title="Distribuição do T
 
 # Widgets para seleção
 selected_company = st.selectbox("Selecione a empresa", ["Hapvida", "Ibyte", "Nagem"])
-selected_state = st.selectbox("Selecione o estado", df_hapvida['ESTADO'].unique())
-selected_status = st.selectbox("Selecione o status", df_hapvida['STATUS'].unique())
+
 
 
 # Carrega os dados
@@ -103,33 +105,43 @@ elif selected_company == "Ibyte":
 else:
     data = df_hapvida
 
+selected_state = st.selectbox("Selecione o estado", ['Todos'] + data['ESTADO'].unique().tolist())
+selected_status = st.selectbox("Selecione o status", ['Todos'] + data['STATUS'].unique().tolist())
+description_length = st.slider("Selecione o tamanho da descrição", 0, 18000, 1000, format="%d")
+
 # Filtrar os dados
 
+if selected_state != 'Todos':
+    # Filtre para um estado específico
+    filtered_data = data[data['ESTADO'] == selected_state]
+else:
+    # Sem filtro para estados, inclua todos
+    filtered_data = data
 
-filtered_data1 = data[(data['ESTADO'] == selected_state) & (data['STATUS'] == selected_status)]                          
+if selected_status != 'Todos':
+    # Filtre para um status específico
+    filtered_data = filtered_data[filtered_data['STATUS'] == selected_status]
+
+
+
+
 
 # Apresentar os resultados
-st.write("Número de reclamações:", len(filtered_data1))
+st.write("Número de reclamações:", len(filtered_data))
 
 # Cria os gráficos
 
 # Gráfico de série temporal do número de reclamações
-st.plotly_chart(plot_serie_temporal_plotly(filtered_data1, 'TEMPO', 'ID', f'Série Temporal de Reclamações - {selected_company}'))
+st.plotly_chart(plot_serie_temporal_plotly(filtered_data, 'TEMPO', 'ID', f'Série Temporal de Reclamações - {selected_company}'))
 
 # Frequência de reclamações por estado
-st.plotly_chart(plot_reclamacoes_por_estado(filtered_data1, 'ESTADO', f'Frequência de Reclamações por Estado - {selected_company}'))
+st.plotly_chart(plot_reclamacoes_por_estado(filtered_data, 'ESTADO', f'Frequência de Reclamações por Estado - {selected_company}'))
 
 # Frequência de cada tipo de **STATUS**
-st.plotly_chart(plot_frequencia_status(filtered_data1, 'STATUS', f'Frequência de Cada Tipo de Status - {selected_company}'))
+st.plotly_chart(plot_frequencia_status(filtered_data, 'STATUS', f'Frequência de Cada Tipo de Status - {selected_company}'))
 
-
-
-description_length = st.slider("Selecione o tamanho da descrição", 0, 18000, 1000, format="%d")
-
-filtered_data2 = data[(data['ESTADO'] == selected_state) & 
-                           (data['STATUS'] == selected_status) & 
-                           (data['DESCRICAO'].apply(len) >= description_length)]
 
 
 # Distribuição do tamanho do texto (coluna **DESCRIÇÃO**)
-st.plotly_chart(plot_distribuicao_tamanho_texto(filtered_data2, 'DESCRICAO', f'Distribuição do Tamanho do Texto - {selected_company}'))
+st.plotly_chart(plot_distribuicao_tamanho_texto(filtered_data, 'DESCRICAO', f'Distribuição do Tamanho do Texto - {selected_company}'))
+
