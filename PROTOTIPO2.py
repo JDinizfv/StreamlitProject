@@ -93,7 +93,7 @@ def plot_distribuicao_tamanho_texto(df, texto_column, title="Distribuição do T
 selected_company = st.selectbox("Selecione a empresa", ["Hapvida", "Ibyte", "Nagem"])
 selected_state = st.selectbox("Selecione o estado", df_hapvida['ESTADO'].unique())
 selected_status = st.selectbox("Selecione o status", df_hapvida['STATUS'].unique())
-description_length = st.slider("Selecione o tamanho da descrição", 0, 18000, 1000, format="%d")
+
 
 # Carrega os dados
 if selected_company == "Nagem":
