@@ -117,13 +117,6 @@ else:
                                (data['STATUS'] == selected_status) ]                        
 
 
-if selected_state == 'Todos':
-    # Filtrar para todos os estados
-    filtered_data2 = data[(data['STATUS'] == selected_status)]
-else:
-    # Filtrar para um estado específico
-    filtered_data2 = data[(data['ESTADO'] == selected_state) & 
-                               (data['STATUS'] == selected_status)]
 
 
 
@@ -139,16 +132,16 @@ st.plotly_chart(plot_serie_temporal_plotly(filtered_data1, 'TEMPO', 'ID', f'Sér
 st.plotly_chart(plot_reclamacoes_por_estado(filtered_data1, 'ESTADO', f'Frequência de Reclamações por Estado - {selected_company}'))
 
 # Frequência de cada tipo de **STATUS**
-st.plotly_chart(plot_frequencia_status(filtered_data2, 'STATUS', f'Frequência de Cada Tipo de Status - {selected_company}'))
+st.plotly_chart(plot_frequencia_status(filtered_data1, 'STATUS', f'Frequência de Cada Tipo de Status - {selected_company}'))
 
 
 
 description_length = st.slider("Selecione o tamanho da descrição", 0, 18000, 1000, format="%d")
 
-filtered_data3 = data[(data['ESTADO'] == selected_state) & 
+filtered_data2 = data[(data['ESTADO'] == selected_state) & 
                            (data['STATUS'] == selected_status) & 
                            (data['DESCRICAO'].apply(len) >= description_length)]
 
 
 # Distribuição do tamanho do texto (coluna **DESCRIÇÃO**)
-st.plotly_chart(plot_distribuicao_tamanho_texto(filtered_data3, 'DESCRICAO', f'Distribuição do Tamanho do Texto - {selected_company}'))
+st.plotly_chart(plot_distribuicao_tamanho_texto(filtered_data2, 'DESCRICAO', f'Distribuição do Tamanho do Texto - {selected_company}'))
