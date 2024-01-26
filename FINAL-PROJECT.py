@@ -113,7 +113,7 @@ if selected_state == 'Todos':
                                (data['DESCRICAO'].apply(len) >= description_length)]
 elif selected_state == 'Todos' and selected_status == 'Todos':
     # Sem filtros para Estados e Status
-    filtered_data = data[(data['DESCRICAO'].apply(len) >= description_length) & data['ESTADO'] & data['STATUS']]
+    filtered_data = data[(data['DESCRICAO'].apply(len) >= description_length) & data['ESTADO'].unique().tolist() & data['STATUS'].unique().tolist()]
 
 elif selected_status == 'Todos':
     # Filtrar apenas para todos os Status
